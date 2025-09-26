@@ -1,14 +1,23 @@
 import { useState } from "react";
 import { getNewTicket, sumOfDigits } from './Helper';
+import Ticket from "./Ticket";
+import TicketNum from "./TicketNum";
 
-function LotteryGame() {
-  let [ticket, setTicket] = useState(null);
+function LotteryGame({n=3, winningSum=15}) {
+  let [ticket, setTicket] = useState(getNewTicket(n));
+  let isWinning = sumOfDigits(ticket) === winningSum;
+  console.log(sumOfDigits(ticket));
+  
+  let buyTicket = () => {
+    setTicket(getNewTicket(n));
+  };
 
   return (
     <>
-      <h1 >Lottery Game <span style={{color: "gold"}}>{(ticket && sumOfDigits(ticket)) === 15 ? " : Congrulations You Won!" : " : Try"}</span> </h1>
-      <h2>Lottery Ticket: {ticket}</h2>
-      <button onClick={() => getNewTicket(setTicket)}>Get New Ticket</button>
+      <h1>Lottery Game!</h1>
+      <Ticket ticket={ticket}/>
+      <button onClick={buyTicket}>Buy New Ticket</button>
+      <h2>{isWinning && "Congratulations, you Won!"}</h2>
     </>
   );
 //   ***imp: setTicket is a React hook function and cannot be called outside the component unless you pass it as an argument.
